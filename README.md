@@ -1,47 +1,87 @@
 # AI Dev Circle
 
-A light-mode community website built with Next.js 16.3.5, React 19.3, and TypeScript. Brand colors: `#0071FF` and `#F05555`.
+**Built for community. A place for developers to learn, build, and explore AI together.**
+
+AI Dev Circle brings developers together in Bengaluru for real conversations, practical learning, and the connections that happen when people share a room. Whether you are exploring AI for the first time or already building with it, there is a place for you in the circle.
+
+[Join us on Luma](https://luma.com/ai-dev-circle) · [Propose a talk](https://forms.gle/mg67Y1TpT5xoDXWG8) · [Contribute to the website](CONTRIBUTION.md)
+
+## Our story
+
+Our roots are in **ReactPlay**, an open-source community built around learning React by building projects. That spirit grew into a series of offline developer meetups in Bengaluru: people sharing what they know, meeting collaborators, and learning from one another.
+
+AI Dev Circle is the next chapter of that journey, backed by ReactPlay and founded by **Pritesh Kiri** and **Tapas Adhikary**. We are expanding the conversation from frontend development to the possibilities of building with AI, while keeping community at the center.
+
+## What we do
+
+- **Bring developers together** through offline meetups and shared conversations.
+- **Learn through talks and demos** about tools, ideas, and real experiences of building software with AI.
+- **Make room for new voices** by welcoming speakers, questions, and different perspectives.
+- **Connect people and partners** who want to support developer learning and collaboration.
+- **Build in the open**, including this website, with contributions from the community.
+
+## About this website
+
+This repository contains the AI Dev Circle community website. It introduces who we are, preserves our ReactPlay journey, and helps people find their next way to take part.
+
+| Page                             | What you will find                                                                 |
+| -------------------------------- | ---------------------------------------------------------------------------------- |
+| Home (`/`)                       | Community introduction, meetup highlights, photos, project ideas, and ways to join |
+| Events (`/events`)               | Searchable past meetups and confirmed upcoming gatherings                          |
+| Event details (`/events/[slug]`) | Event information, photos, and original recaps or registration links               |
+| Our story (`/our-story`)         | Our roots, vision, timeline, and founding members                                  |
+| Moments (`/moments`)             | Photos and video highlight links from our meetups                                  |
+| Partners (`/partners`)           | Organizations we have collaborated with along the community journey                |
+
+The site uses a light theme with our blue (`#0071FF`) and coral (`#F05555`) colors, gentle motion, and looping photo and partner galleries. Motion respects reduced-motion preferences, and the galleries include pause controls.
 
 ## Run locally
 
+You will need **Node.js 20.9 or newer**, npm, and Git.
+
 ```sh
-npm install
+git clone https://github.com/AI-Dev-Circle/website.git
+cd website
+npm ci
 npm run dev
 ```
 
-Open http://127.0.0.1:3000. For a production build, run `npm run build` followed by `npm start`.
+Open [the local site](http://127.0.0.1:3000).
 
-## Pages and behavior
+Content, images, and fonts are included in the project. No API keys or environment variables are required for local development. The project-idea interaction uses curated suggestions and does not require an AI service.
 
-- `/`: community introduction, meetup highlights, origin story, two looping rows of all 26 meetup photos, curated project-idea interaction, scrolling partner logos, and Luma join actions.
-- `/events`: 26 documented ReactPlay events with search, year filters, and an upcoming announcement state.
-- `/events/[slug]`: statically generated event pages with original recap links.
-- `/our-story`: ReactPlay roots, vision, timeline, and portraits of founding members Pritesh Kiri and Tapas Adhikary with their LinkedIn and X profiles.
-- `/moments`: photo archive, year filters, accessible modal viewer, and existing video highlight links.
-- `/partners`: 20 organizations, following the organizer’s updated partner list, and partnership contact.
+| Command             | Purpose                                                                           |
+| ------------------- | --------------------------------------------------------------------------------- |
+| `npm run dev`       | Start the local development server                                                |
+| `npm run build`     | Create a production build and generate Next.js types                              |
+| `npm start`         | Serve the production build locally after building                                 |
+| `npm run typecheck` | Check TypeScript types; run after development startup or a build on a fresh clone |
 
-All meetup photos and partner images are stored locally under `public/`. Fonts are self-hosted. A moving blue-and-coral gradient appears across every page, with a custom spark cursor and following orbit on desktop. Decorative motion respects reduced-motion preferences. Photo and partner ribbons have pause controls, pause on hover and focus, and become manually scrollable with reduced motion. The photo viewer supports Escape and arrow keys.
+## Project structure
 
-## Update content
+Built with **Next.js App Router, React, TypeScript, and CSS**, with Lucide icons and self-hosted DM Sans and Manrope fonts. Dependency versions are recorded in [package.json](package.json) and the npm lockfile.
 
-Edit `lib/data.ts` for event records, partner records, and contact destinations. Add confirmed future gatherings to `upcomingEvents`, ordered by date, with a unique slug, title, timezone-aware ISO `startsAt`, venue, description, registration URL, and optional image. The upcoming list and event detail pages pick them up automatically on the next build. No unannounced event is presented as scheduled. Remove or archive upcoming records once the event has passed.
+```text
+app/                    Pages, layouts, global styles, and favicon
+components/             Shared UI and interactive features
+lib/data.ts             Events, partners, founders, and community links
+public/brand/           Brand images
+public/events/          Meetup photos
+public/founders/        Founder portraits
+public/partners/        Partner logos
+```
 
-Place event images in `public/events/`, founder portraits in `public/founders/`, and partner logos in `public/partners/`. Each event has a stable slug used for its URL. Keep historical events attributed to ReactPlay. Founder and community social destinations are centralized in `lib/data.ts`.
+Most content changes begin in [lib/data.ts](lib/data.ts). See the [contribution guide](CONTRIBUTION.md#updating-community-content) for guidance on event records, images, and partner information.
 
-The idea interaction in `components/idea-spark.tsx` uses curated suggestions. It does not call an AI service or collect visitor data.
+## Contribute
 
-## Content choices to revisit before a public launch
+Everyone is welcome to help make this website better. You can contribute code, improve accessibility, fix copy, document a meetup, share event photos, or suggest an idea. First-time contributors are welcome, and small improvements matter.
 
-- The displayed 29-meetup history comes from Pritesh's brief. The imported public archive has 26 entries; editions 27–29 still need their full records.
-- Where source dates disagree, only a month or year is displayed. Research details are in `AI-Dev-Circle-research.md`.
-- Join links point to AI Dev Circle’s Luma calendar: https://luma.com/ai-dev-circle. Change `COMMUNITY_URL` if the community moves to a new calendar.
-- CFP in both navigation menus opens the supplied Google Form: https://forms.gle/mg67Y1TpT5xoDXWG8. Its destination is configured with `CFP_URL`.
-- Asset downloads are deferred; no asset-download page or navigation item is included.
-- Partnership and footer contact links open an email to `pritesh.d.kiri@gmail.com`. The footer links to AI Dev Circle’s LinkedIn, Instagram, and X profiles. No contact form or email collection has been added.
-- Partners are described as historical collaborations across ReactPlay and the wider community journey, not current AI Dev Circle sponsors.
-- Existing Cashfree and Hacktoberfest video links open their original platforms. Add the new portrait clips when available; no placeholder clips are shown.
-- Header and footer pair the supplied transparent black ADC mark in `public/brand/adc-black.png` with the stacked “AI Dev / Circle” wordmark. The previously supplied square logo remains the favicon in `app/icon.png`.
+Read [CONTRIBUTION.md](CONTRIBUTION.md) to get started. For a bug or a proposal, [open an issue](https://github.com/AI-Dev-Circle/website/issues). For a larger change, share your idea in an issue before investing time in the implementation.
 
-## Publishing
+## Find your circle
 
-This project uses standard Next.js and can run on a Next.js-compatible host. No domain, hosting account, or public deployment has been configured. The local preview is the current deliverable.
+- **Attend a meetup:** [AI Dev Circle on Luma](https://luma.com/ai-dev-circle)
+- **Share what you know:** [Submit a talk proposal](https://forms.gle/mg67Y1TpT5xoDXWG8)
+- **Follow the community:** [LinkedIn](https://www.linkedin.com/company/ai-dev-circle/) · [Instagram](https://www.instagram.com/aidevcircle) · [X](https://x.com/aidevcircle)
+- **Talk to us about partnerships:** [pritesh.d.kiri@gmail.com](mailto:pritesh.d.kiri@gmail.com)
