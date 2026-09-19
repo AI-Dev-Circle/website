@@ -61,7 +61,9 @@ For a **historical ReactPlay meetup**, update `records` and, where needed, `desc
 
 Keep historical meetups attributed to ReactPlay. Include the source for dates, attendance figures, and recap details in your pull request. If an exact date is uncertain, use a verified month or year rather than guessing.
 
-The site describes a **29-meetup history**, while the current public archive contains **26 documented entries**. Please help fill the gaps with verified records; do not create placeholder events to make the numbers match.
+The archive contains **29 documented gatherings**, including Sarvam, Clerk & Coffee, and the AI Dev Circle launch at GeekyAnts in 2026. Newer entries live in `recentEvents` and can include a custom `label`, `community`, `venue`, `story`, additional `photos`, and `photoCredit`. Their numeric `edition` values are stable archive identifiers; use a descriptive label when a public ReactPlay edition number is unconfirmed. Keep existing slugs stable, and add only verified events.
+
+Use the recap URL as the source for event details. If only a month is confirmed, keep the display date at month precision. See [media sources](public/events/SOURCES.md) for the latest event photos and logo provenance.
 
 ### Photos and other media
 

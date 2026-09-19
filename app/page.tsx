@@ -5,7 +5,8 @@ import {
   Code2,
   Lightbulb,
   Users,
-  MapPin,
+  Atom,
+  Infinity as InfinityIcon,
 } from "lucide-react";
 import {
   Arrow,
@@ -20,7 +21,9 @@ import Reveal from "@/components/reveal";
 import IdeaSpark from "@/components/idea-spark";
 import Gallery from "@/components/gallery";
 import PartnerMarquee from "@/components/partner-marquee";
-import { featuredEvents, getEvent } from "@/lib/data";
+import HeroCollage from "@/components/hero-collage";
+import BrandSpark from "@/components/brand-spark";
+import { CONTACT_URL, featuredEvents, getEvent } from "@/lib/data";
 
 export default function Home() {
   return (
@@ -50,7 +53,7 @@ export default function Home() {
           </div>
           <div className="hero-roots">
             <span className="react-symbol" aria-hidden="true">
-              ⚛
+              <Atom size={32} strokeWidth={1.3} />
             </span>
             <span>
               A new chapter. The same community.
@@ -61,48 +64,21 @@ export default function Home() {
             </span>
           </div>
         </div>
-        <div className="hero-visual">
-          <div className="hero-orbit orbit-one" />
-          <div className="hero-orbit orbit-two" />
-          <span className="hero-asterisk" aria-hidden="true">
-            ✳
-          </span>
-          <div className="hero-photo-wrap">
-            <Photo
-              priority
-              src={getEvent(25).image}
-              alt="The ReactPlay community together at Canvas in Bengaluru"
-              className="hero-photo"
-              sizes="(max-width: 750px) 90vw, 45vw"
-            />
-            <div className="photo-caption">
-              <MapPin size={13} /> REAL PEOPLE. REAL CONNECTIONS.
-            </div>
-          </div>
-          <div className="hero-note">
-            <span>HELLO, BENGALURU!</span>
-            <strong>
-              Pull up
-              <br />a chair<span>↗</span>
-            </strong>
-          </div>
-          <div className="hero-small-photo">
-            <Photo
-              src={getEvent(9).image}
-              alt="A casual ReactPlay gathering at Cubbon Park"
-              sizes="180px"
-            />
-          </div>
-          <div className="hero-stamp">
-            <span>LEARN · BUILD · BELONG</span>
-            <span className="stamp-arrow">↗</span>
-            <small>THERE’S ROOM FOR YOU</small>
-          </div>
-          <div className="hero-location">
-            <span className="tiny-circle" />
-            12.9716° N, 77.5946° E
-          </div>
-        </div>
+        <HeroCollage
+          photos={[
+            [29, 25, 26],
+            [28, 9, 24],
+            [27, 21, 13],
+          ].map((editions) =>
+            editions.map((edition) => {
+              const event = getEvent(edition);
+              return {
+                src: event.image,
+                alt: `Our community gathering with ${event.host}, Bengaluru, ${event.year}`,
+              };
+            }),
+          )}
+        />
         <a href="#gatherings" className="hero-scroll">
           <ArrowDown size={15} /> GOOD THINGS HAPPEN OFFLINE
         </a>
@@ -111,8 +87,22 @@ export default function Home() {
         <div>
           {[0, 1].map((i) => (
             <span key={i}>
-              CURIOUS MINDS <i>✳</i> OPEN DOORS <i>✳</i> SHARED POSSIBILITIES{" "}
-              <i>✳</i> YOUR PEOPLE <i>✳</i>{" "}
+              CURIOUS MINDS{" "}
+              <i>
+                <BrandSpark />
+              </i>{" "}
+              OPEN DOORS{" "}
+              <i>
+                <BrandSpark />
+              </i>{" "}
+              SHARED POSSIBILITIES{" "}
+              <i>
+                <BrandSpark />
+              </i>{" "}
+              YOUR PEOPLE{" "}
+              <i>
+                <BrandSpark />
+              </i>{" "}
             </span>
           ))}
         </div>
@@ -148,6 +138,33 @@ export default function Home() {
           ))}
         </div>
       </section>
+      <section className="partners-home section">
+        <div className="container">
+          <Reveal>
+            <div className="section-heading">
+              <div>
+                <Eyebrow>02 / BETTER, TOGETHER</Eyebrow>
+                <h2>
+                  In very good <span className="serif-word">company.</span>
+                </h2>
+              </div>
+              <div className="partner-actions">
+                <Link href="/partners" className="text-link">
+                  Explore partners <Arrow diagonal />
+                </Link>
+                <a href={CONTACT_URL} className="button button-blue">
+                  Let’s collaborate <Arrow diagonal />
+                </a>
+              </div>
+            </div>
+            <p className="partner-context">
+              Some of the organizations we’ve collaborated with across ReactPlay
+              and our wider community journey.
+            </p>
+            <PartnerMarquee />
+          </Reveal>
+        </div>
+      </section>
       <section className="story-section">
         <div className="container story-grid">
           <Reveal className="story-photo-column">
@@ -163,11 +180,12 @@ export default function Home() {
               <span>GeekyAnts · November 2023</span>
             </div>
             <span className="story-scribble">
-              every circle starts somewhere ↗
+              every circle starts somewhere{" "}
+              <ArrowUpRight size={18} aria-hidden="true" />
             </span>
           </Reveal>
           <Reveal className="story-copy">
-            <Eyebrow>02 / OUR ROOTS RUN DEEP</Eyebrow>
+            <Eyebrow>03 / OUR ROOTS RUN DEEP</Eyebrow>
             <h2>
               New possibilities.
               <br />
@@ -188,7 +206,10 @@ export default function Home() {
             <div className="story-stats">
               <div>
                 <strong>
-                  29<span>↗</span>
+                  29
+                  <span>
+                    <ArrowUpRight size="1em" aria-hidden="true" />
+                  </span>
                 </strong>
                 <span>meetups in our journey</span>
               </div>
@@ -197,7 +218,9 @@ export default function Home() {
                 <span>our first Bengaluru meetup</span>
               </div>
               <div>
-                <strong>∞</strong>
+                <strong>
+                  <InfinityIcon size="1em" aria-label="Endless" role="img" />
+                </strong>
                 <span>reasons to keep building</span>
               </div>
             </div>
@@ -208,7 +231,7 @@ export default function Home() {
         <Reveal>
           <div className="section-heading">
             <div>
-              <Eyebrow>03 / BRING YOUR CURIOSITY</Eyebrow>
+              <Eyebrow>04 / BRING YOUR CURIOSITY</Eyebrow>
               <h2>
                 Different skills.
                 <br />
@@ -264,14 +287,14 @@ export default function Home() {
           <Reveal>
             <div className="section-heading">
               <div>
-                <Eyebrow>04 / YOU HAD TO BE THERE</Eyebrow>
+                <Eyebrow>05 / YOU HAD TO BE THERE</Eyebrow>
                 <h2>
                   This is what
                   <br />
                   <span className="serif-word">community</span> looks like.
                 </h2>
               </div>
-              <Link href="/moments" className="text-link">
+              <Link href="/events#archive" className="text-link">
                 Inside the circle <Arrow diagonal />
               </Link>
             </div>
@@ -281,7 +304,7 @@ export default function Home() {
       </section>
       <section className="container section spark-section">
         <Reveal>
-          <Eyebrow>05 / WHAT IF WE BUILT…</Eyebrow>
+          <Eyebrow>06 / WHAT IF WE BUILT…</Eyebrow>
           <h2>
             Big things start
             <br />
@@ -299,28 +322,6 @@ export default function Home() {
         <Reveal>
           <IdeaSpark />
         </Reveal>
-      </section>
-      <section className="partners-home section">
-        <div className="container">
-          <Reveal>
-            <div className="section-heading">
-              <div>
-                <Eyebrow>06 / BETTER, TOGETHER</Eyebrow>
-                <h2>
-                  In very good <span className="serif-word">company.</span>
-                </h2>
-              </div>
-              <Link href="/partners" className="text-link">
-                Meet our partners <Arrow diagonal />
-              </Link>
-            </div>
-            <p className="partner-context">
-              Some of the organizations we’ve collaborated with across ReactPlay
-              and our wider community journey.
-            </p>
-            <PartnerMarquee />
-          </Reveal>
-        </div>
       </section>
       <JoinSection />
     </>

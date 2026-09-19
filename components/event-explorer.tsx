@@ -1,9 +1,14 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { Search, ArrowUpRight } from "lucide-react";
-import { events, upcomingEvents, COMMUNITY_URL } from "@/lib/data";
-import { EventCard, Orbit } from "./site";
+import { events, upcomingEvents, COMMUNITY_URL, eventLabel } from "@/lib/data";
+import { Orbit } from "./site";
 import { UpcomingCard } from "./upcoming";
+const years = [...new Set(events.map((event) => event.year))].sort(
+  (a, b) => b - a,
+);
 export default function EventExplorer() {
   const [view, setView] = useState<"past" | "upcoming">(
     upcomingEvents.length ? "upcoming" : "past",
@@ -13,14 +18,14 @@ export default function EventExplorer() {
   const filtered = events.filter(
     (e) =>
       (year === "all" || e.year === Number(year)) &&
-      `${e.title} ${e.host} ${e.edition} ${e.year}`
+      `${e.title} ${e.host} ${e.community ?? "ReactPlay"} ${e.edition} ${e.year}`
         .toLowerCase()
-        .includes(query.toLowerCase()),
+        .includes(query.trim().toLowerCase()),
   );
   return (
-    <section className="container archive-section">
+    <section className="container archive-section" id="archive">
       <div className="archive-toolbar">
-        <div className="segmented" aria-label="Event status">
+        <div className="segmented" role="group" aria-label="Event status">
           <button
             aria-pressed={view === "past"}
             onClick={() => setView("past")}
@@ -34,45 +39,75 @@ export default function EventExplorer() {
             What’s next
           </button>
         </div>
-        {view === "past" && (
-          <div className="archive-controls">
-            <label className="search-field">
-              <Search size={17} />
-              <span className="sr-only">Search events</span>
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Find a gathering…"
-                type="search"
-              />
-            </label>
-            <label className="year-field">
-              <span className="sr-only">Filter by year</span>
-              <select value={year} onChange={(e) => setYear(e.target.value)}>
-                <option value="all">All years</option>
-                {[2026, 2025, 2024, 2023].map((y) => (
-                  <option key={y} value={y}>
-                    {y}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        )}
       </div>
+      {view === "past" && (
+        <div className="archive-filters">
+          <div
+            className="gallery-filter"
+            role="group"
+            aria-label="Filter events by year"
+          >
+            {["all", ...years.map(String)].map((value) => (
+              <button
+                key={value}
+                aria-pressed={year === value}
+                onClick={() => setYear(value)}
+              >
+                {value === "all" ? "All years" : value}
+              </button>
+            ))}
+          </div>
+          <label className="search-field">
+            <Search size={17} aria-hidden="true" />
+            <span className="sr-only">Search events</span>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Find a gathering…"
+              type="search"
+            />
+          </label>
+        </div>
+      )}
       {view === "past" ? (
         <>
           <div className="archive-caption">
-            <p>From the ReactPlay archives. Part of our shared story.</p>
+            <p>
+              From ReactPlay to AI Dev Circle. Our story, one gathering at a
+              time.
+            </p>
             <span aria-live="polite">
               {filtered.length}{" "}
               {filtered.length === 1 ? "gathering" : "gatherings"}
             </span>
           </div>
           {filtered.length ? (
-            <div className="event-grid">
-              {filtered.map((event) => (
-                <EventCard key={event.edition} event={event} />
+            <div className="gallery-grid gallery-full event-gallery">
+              {filtered.map((event, index) => (
+                <Link
+                  key={event.edition}
+                  href={`/events/${event.slug}`}
+                  className="gallery-item"
+                  aria-label={`Explore ${event.title}, ${event.when}`}
+                >
+                  <Image
+                    src={event.image}
+                    alt={`Our community gathering with ${event.host} in ${event.year}`}
+                    fill
+                    loading={index === 0 ? "eager" : "lazy"}
+                    sizes="(max-width: 700px) 100vw, (max-width: 850px) 50vw, 33vw"
+                  />
+                  <span className="gallery-overlay">
+                    <span>
+                      {event.host}
+                      <small>
+                        {`${event.community ?? "ReactPlay"} · ${event.year} · ${eventLabel(event)}`}
+                      </small>
+                      <span className="event-gallery-date">{event.when}</span>
+                    </span>
+                    <ArrowUpRight size={20} aria-hidden="true" />
+                  </span>
+                </Link>
               ))}
             </div>
           ) : (

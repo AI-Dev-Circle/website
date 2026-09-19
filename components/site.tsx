@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import BrandSpark from "@/components/brand-spark";
 import { ArrowUpRight, ArrowRight, MapPin, Code2, Mail } from "lucide-react";
 import {
   COMMUNITY_URL,
@@ -7,6 +8,7 @@ import {
   INSTAGRAM_URL,
   LINKEDIN_URL,
   X_URL,
+  eventLabel,
   type CommunityEvent,
 } from "@/lib/data";
 
@@ -117,18 +119,19 @@ export function EventCard({ event }: { event: CommunityEvent }) {
       <div className="event-image">
         <Photo
           src={event.image}
-          alt={`The ReactPlay community at ${event.host}, ${event.year}`}
+          alt={`Our community gathering with ${event.host}, ${event.year}`}
           sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
         />
         <span className="image-pill">
-          REACTPLAY <span>↗</span>
+          {event.community ?? "ReactPlay"}{" "}
+          <ArrowUpRight size={12} aria-hidden="true" />
         </span>
         <span className="event-open">
           <Arrow diagonal />
         </span>
       </div>
       <div className="event-meta">
-        <span>EDITION {String(event.edition).padStart(2, "0")}</span>
+        <span>{eventLabel(event)}</span>
         <span>{event.when}</span>
       </div>
       <h3>{event.title}</h3>
@@ -188,7 +191,6 @@ export function Footer() {
             <span>FIND YOUR WAY</span>
             <Link href="/events">Events</Link>
             <Link href="/our-story">Our story</Link>
-            <Link href="/moments">Moments</Link>
             <Link href="/partners">Partners</Link>
           </div>
           <div>
@@ -221,7 +223,10 @@ export function Footer() {
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} AI Dev Circle</span>
         <span>
-          Built for community. <span className="coral">✳</span>
+          Built for community.{" "}
+          <span className="coral">
+            <BrandSpark />
+          </span>
         </span>
         <a href={CONTACT_URL}>
           Get in touch <Mail size={14} />

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Eyebrow, JoinSection, Orbit } from "@/components/site";
 import EventExplorer from "@/components/event-explorer";
+import VideoHighlights from "@/components/video-highlights";
 export const metadata: Metadata = {
   title: "Events",
   description:
-    "Explore the ReactPlay meetup archive and find your next gathering with AI Dev Circle in Bengaluru.",
+    "Find your next AI Dev Circle gathering and explore our ReactPlay meetup journey through photos, recaps, and video highlights.",
 };
 export default function Events() {
   return (
@@ -26,6 +27,7 @@ export default function Events() {
         <Orbit />
       </section>
       <EventExplorer />
+      <VideoHighlights />
       <JoinSection />
     </>
   );

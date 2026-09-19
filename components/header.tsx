@@ -8,7 +8,6 @@ import { CFP_URL } from "@/lib/data";
 const links = [
   ["/events", "Events"],
   ["/our-story", "Our story"],
-  ["/moments", "Moments"],
   ["/partners", "Partners"],
 ];
 export default function Header() {

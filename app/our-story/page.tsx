@@ -171,8 +171,8 @@ export default function Story() {
       </section>
       <div className="container story-next">
         <span>Want to see how that feels in a room?</span>
-        <Link href="/moments" className="text-link">
-          Meet the moments <ArrowUpRight size={18} />
+        <Link href="/events#archive" className="text-link">
+          Explore our gatherings <ArrowUpRight size={18} />
         </Link>
       </div>
       <JoinSection />

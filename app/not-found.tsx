@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Orbit } from "@/components/site";
+import { Arrow, Orbit } from "@/components/site";
 export default function NotFound() {
   return (
     <section className="container not-found">
@@ -12,7 +12,7 @@ export default function NotFound() {
       </h1>
       <p>This page may have moved, but your people are still here.</p>
       <Link href="/" className="button button-blue">
-        Back to the circle ↗
+        Back to the circle <Arrow diagonal />
       </Link>
     </section>
   );

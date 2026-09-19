@@ -1,6 +1,21 @@
 export const COMMUNITY_URL = "https://luma.com/ai-dev-circle";
 export const CONTACT_EMAIL = "pritesh.d.kiri@gmail.com";
-export const CONTACT_URL = `mailto:${CONTACT_EMAIL}`;
+export const CONTACT_URL = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent("Let's partner with AI Dev Circle")}&body=${encodeURIComponent(
+  [
+    "Hi AI Dev Circle team,",
+    "",
+    "I'd love to explore a partnership with your community.",
+    "",
+    "Name: [Your name]",
+    "Organization: [Organization or community]",
+    "Interested in: [Hosting a meetup / sponsoring an event / sharing a talk or workshop / community collaboration]",
+    "Our idea: [A little about what you have in mind]",
+    "Possible dates or location: [If you have any in mind]",
+    "",
+    "Looking forward to building something together!",
+    "[Your name]",
+  ].join("\r\n"),
+)}`;
 export const INSTAGRAM_URL = "https://www.instagram.com/aidevcircle";
 export const LINKEDIN_URL = "https://www.linkedin.com/company/ai-dev-circle/";
 export const X_URL = "https://x.com/aidevcircle";
@@ -44,6 +59,8 @@ export function eventDate(startsAt: string) {
 }
 
 export type CommunityEvent = {
+  // Stable archive identifier; recent gatherings use a label until their
+  // ReactPlay edition numbers are confirmed.
   edition: number;
   slug: string;
   host: string;
@@ -54,7 +71,85 @@ export type CommunityEvent = {
   description: string;
   recap: string;
   video?: string;
+  label?: string;
+  community?: string;
+  venue?: string;
+  story?: string;
+  photos?: { src: string; alt: string }[];
+  photoCredit?: { name: string; url: string };
 };
+
+export const eventLabel = (event: CommunityEvent) =>
+  event.label ?? `Edition ${String(event.edition).padStart(2, "0")}`;
+
+const recentEvents: CommunityEvent[] = [
+  {
+    edition: 29,
+    slug: "ai-dev-circle-launch-geekyants-2026",
+    host: "GeekyAnts",
+    year: 2026,
+    when: "September 2026",
+    image: "/events/geekyants-launch-2026-1.jpg",
+    title: "A new chapter, together at GeekyAnts",
+    label: "Community launch",
+    community: "AI Dev Circle",
+    description:
+      "Our September ReactPlay meetup at GeekyAnts was part of Bengaluru Tech Week — and the beginning of AI Dev Circle. Developers and builders came together to share what they’re building and learning with AI.",
+    story:
+      "Hosted by Pritesh Kiri and Tapas Adhikary, the gathering featured Wadad Parker, Gracey Dugar, Ashita Prasad, Smile Gupta, Sriram G, and Sanket Sahu. It was the moment we introduced AI Dev Circle: a new initiative by ReactPlay, carrying our community’s curiosity into what comes next.",
+    recap:
+      "https://www.linkedin.com/feed/update/urn:li:activity:7502758741381935104/",
+    photos: [2, 3, 4, 5].map((number) => ({
+      src: `/events/geekyants-launch-2026-${number}.jpg`,
+      alt: `A moment from the AI Dev Circle launch meetup at GeekyAnts, September 2026 — photo ${number}`,
+    })),
+  },
+  {
+    edition: 28,
+    slug: "clerk-coffee-bengaluru-2026",
+    host: "Clerk",
+    venue: "Café meetup",
+    year: 2026,
+    when: "August 2026",
+    image: "/events/clerk-coffee-2026-1.jpg",
+    title: "Clerk & Coffee: conversations over a cup",
+    label: "Clerk & Coffee",
+    description:
+      "40+ builders gathered for a relaxed café meetup, hosted by Pritesh Kiri in collaboration with ReactPlay and The Humans Of Tech, and sponsored by Clerk. No presentations or fixed agenda — just coffee and conversations about AI agents, authentication, identity, and the things we’re building.",
+    story:
+      "Between 60-second idea pitches, Guess the Auth Term, games, and a photo booth, there was plenty of room to meet someone new. A Saturday afternoon for swapping side-project stories, startup ideas, and a little Clerk swag.",
+    recap:
+      "https://www.linkedin.com/posts/pritesh-kiri_yesterday-i-hosted-the-clerkcom-bangalore-ugcPost-7499811343513067520-Z5iZ/",
+    photos: [2, 3, 4].map((number) => ({
+      src: `/events/clerk-coffee-2026-${number}.jpg`,
+      alt: `A moment from the Clerk & Coffee community meetup in Bengaluru, August 2026 — photo ${number}`,
+    })),
+    photoCredit: {
+      name: "Sumanth B A",
+      url: "https://in.linkedin.com/in/sumanthba",
+    },
+  },
+  {
+    edition: 27,
+    slug: "reactplay-sarvam-august-2026",
+    host: "Sarvam",
+    year: 2026,
+    when: "8 August 2026",
+    image: "/events/sarvam-2026-1.jpg",
+    title: "Exploring AI, together at Sarvam",
+    label: "August meetup",
+    description:
+      "60+ developers joined our August ReactPlay meetup at the Sarvam office in Bengaluru. An afternoon of practical AI talks, shared ideas, and conversations with the people building what comes next.",
+    story:
+      "Pavan Belagatti, Saurabh Daware, Yasuhiro Nose, and Vinayak Gavariya shared their perspectives with the community. Hosted by Pritesh Kiri and Tapas Adhikary, with Sarvam opening its doors for the gathering.",
+    recap:
+      "https://www.linkedin.com/feed/update/urn:li:ugcPost:7492091697980608514/",
+    photos: [2, 3, 4, 5].map((number) => ({
+      src: `/events/sarvam-2026-${number}.jpg`,
+      alt: `A moment from the ReactPlay meetup at Sarvam, August 2026 — photo ${number}`,
+    })),
+  },
+];
 
 type EventSeed = [number, string, number, string, string, string, string];
 const records: EventSeed[] = [
@@ -312,39 +407,40 @@ const descriptions: Record<number, string> = {
   25: "75+ developers came together at Canvas for talks, networking, Guess the Tech Term, and React Nexus ticket giveaways.",
   26: "Our twenty-sixth ReactPlay Bengaluru gathering brought the community back together at ZopDev.",
 };
-export const events: CommunityEvent[] = records
-  .map(([edition, host, year, when, image, title, recap]) => ({
-    edition,
-    host,
-    year,
-    when,
-    image: `/events/${image}`,
-    title,
-    recap,
-    slug: `reactplay-${edition}-${host.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
-    description:
-      descriptions[edition] ||
-      `The ReactPlay community came together at ${host} in Bengaluru for edition ${edition} of our meetup series. Explore the original recap for the moments and conversations from the day.`,
-    ...(edition === 17
-      ? { video: "https://www.youtube.com/watch?v=RPXbq4pypns" }
-      : {}),
-    ...(edition === 19
-      ? {
-          video:
-            "https://www.linkedin.com/posts/cashfree_where-does-ai-actually-save-time-for-frontend-ugcPost-7411660768066236417-Qgll",
-        }
-      : {}),
-  }))
-  .reverse();
-export const featuredEvents = [
-  events.find((e) => e.edition === 26)!,
-  events.find((e) => e.edition === 22)!,
-  events.find((e) => e.edition === 21)!,
+export const events: CommunityEvent[] = [
+  ...recentEvents,
+  ...records
+    .map(([edition, host, year, when, image, title, recap]) => ({
+      edition,
+      host,
+      year,
+      when,
+      image: `/events/${image}`,
+      title,
+      recap,
+      slug: `reactplay-${edition}-${host.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+      description:
+        descriptions[edition] ||
+        `The ReactPlay community came together at ${host} in Bengaluru for edition ${edition} of our meetup series. Explore the original recap for the moments and conversations from the day.`,
+      ...(edition === 17
+        ? { video: "https://www.youtube.com/watch?v=RPXbq4pypns" }
+        : {}),
+      ...(edition === 19
+        ? {
+            video:
+              "https://www.linkedin.com/posts/cashfree_where-does-ai-actually-save-time-for-frontend-ugcPost-7411660768066236417-Qgll",
+          }
+        : {}),
+    }))
+    .reverse(),
 ];
+export const featuredEvents = recentEvents;
 export const getEvent = (edition: number) =>
   events.find((e) => e.edition === edition)!;
 
 export const partners = [
+  ["Clerk", "logo-clerk.svg", "https://clerk.com/"],
+  ["Sarvam", "logo-sarvam.svg", "https://www.sarvam.ai/"],
   ["Microsoft", "logo-microsoft.png", "https://www.microsoft.com/"],
   ["IBM", "logo-ibm.png", "https://www.ibm.com/"],
   ["Kanini", "logo-kanini.png", "https://kanini.com/"],
@@ -352,7 +448,6 @@ export const partners = [
   ["Amadeus", "amadeus.png", "https://amadeus.com/"],
   ["Razorpay", "logo-razorpay.png", "https://razorpay.com/"],
   ["Cashfree", "logo-cashfree.png", "https://www.cashfree.com/"],
-  ["Elasticsearch", "logo-elasticsearch.png", "https://www.elastic.co/"],
   ["MongoDB", "logo-mongodb.png", "https://www.mongodb.com/"],
   ["Postman", "logo-postman.png", "https://www.postman.com/"],
   ["Harness", "logo-harness.png", "https://www.harness.io/"],
@@ -367,6 +462,6 @@ export const partners = [
   ["DevRev", "logo-devrev.png", "https://devrev.ai/"],
 ].map(([name, file, url]) => ({ name, logo: `/partners/${file}`, url }));
 
-export const galleryEvents = [21, 25, 22, 1, 24, 9, 13, 26, 12, 6, 23, 17].map(
-  getEvent,
-);
+export const galleryEvents = [
+  29, 28, 27, 21, 25, 22, 1, 24, 9, 13, 26, 12, 6, 23, 17,
+].map(getEvent);

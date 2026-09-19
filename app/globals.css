@@ -557,12 +557,43 @@ svg {
   border-radius: 10px;
   z-index: 2;
 }
-.hero-photo {
+.hero-slides.hero-photo {
   height: 330px;
   border-radius: 4px;
 }
 .hero-photo img {
   object-position: 50% 65%;
+}
+.hero-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 3px;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+.hero-slide.is-active {
+  opacity: 1;
+}
+.hero-slide img {
+  object-fit: cover;
+}
+.hero-small-photo.hero-third-photo {
+  left: auto;
+  right: 5px;
+  bottom: -12px;
+  transform: rotate(8deg);
+}
+.brand-spark {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 .photo-caption {
   padding: 12px 7px 7px;
@@ -574,6 +605,12 @@ svg {
   letter-spacing: 0.11em;
   font-weight: 600;
 }
+.hero-orbits {
+  position: absolute;
+  inset: -15px 0 -15px;
+  overflow: clip;
+  pointer-events: none;
+}
 .hero-orbit {
   position: absolute;
   width: 450px;
@@ -582,6 +619,19 @@ svg {
   border-radius: 50%;
   left: 8px;
   top: 13px;
+  animation: hero-orbit-turn 24s linear infinite;
+  pointer-events: none;
+}
+.hero-orbit::after {
+  content: "";
+  position: absolute;
+  top: 14%;
+  left: 14%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 0 6px #0071ff0c;
 }
 .orbit-two {
   width: 380px;
@@ -590,6 +640,12 @@ svg {
   left: 54px;
   top: -12px;
   border-color: #efdddd;
+  animation-name: hero-orbit-counterturn;
+  animation-duration: 32s;
+}
+.orbit-two::after {
+  background: var(--coral);
+  box-shadow: 0 0 0 6px #f055550c;
 }
 .hero-asterisk {
   position: absolute;
@@ -599,7 +655,11 @@ svg {
   line-height: 1;
   color: var(--coral);
   z-index: 3;
-  animation: star-turn 22s ease-in-out infinite;
+  animation: hero-orbit-turn 8s linear infinite;
+}
+.hero-visual[data-paused="true"] .hero-orbit,
+.hero-visual[data-paused="true"] .hero-asterisk {
+  animation-play-state: paused;
 }
 .hero-note {
   position: absolute;
@@ -633,6 +693,12 @@ svg {
   bottom: 22px;
   font-size: 35px;
 }
+.hero-note strong > span svg,
+.story-scribble svg,
+.story-stats strong svg {
+  display: inline-block;
+  vertical-align: middle;
+}
 .hero-small-photo {
   position: absolute;
   bottom: 4px;
@@ -651,48 +717,6 @@ svg {
 }
 .hero-small-photo img {
   object-position: 35% 60%;
-}
-.hero-stamp {
-  position: absolute;
-  bottom: -4px;
-  right: 8px;
-  width: 145px;
-  height: 145px;
-  z-index: 4;
-  background: #f4f8ff;
-  border: 1px solid var(--blue);
-  border-radius: 50%;
-  transform: rotate(11deg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: var(--blue-ink);
-}
-.hero-stamp > span:first-child {
-  font-size: 9px;
-  letter-spacing: 0.04em;
-}
-.hero-stamp small {
-  font-size: 8px;
-  letter-spacing: 0.025em;
-}
-.hero-stamp .stamp-arrow {
-  font-size: 65px;
-  line-height: 1.15;
-  font-weight: 300;
-}
-.hero-location {
-  position: absolute;
-  bottom: -35px;
-  left: 205px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 9px;
-  letter-spacing: 0.07em;
-  color: #78818b;
-  white-space: nowrap;
 }
 .hero-scroll {
   position: absolute;
@@ -734,6 +758,7 @@ svg {
   font-size: 19px;
 }
 .word-ribbon i {
+  display: inline-flex;
   font-style: normal;
   color: var(--coral);
   font-size: 27px;
@@ -1250,6 +1275,16 @@ svg {
 .partners-home .section-heading {
   margin-bottom: 19px;
 }
+.partner-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.partner-actions > * {
+  white-space: nowrap;
+}
 .partners-home h2 {
   font-size: 44px;
 }
@@ -1330,11 +1365,29 @@ svg {
   border-radius: 50%;
   top: 0;
   left: 0;
+  animation: decorative-orbit-turn 24s linear infinite;
+}
+.join-ring::after {
+  content: "";
+  position: absolute;
+  top: 14%;
+  left: 14%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 0 5px #0071ff0c;
 }
 .join-ring.second {
   left: 90px;
   top: 55px;
   border-color: #f6a3a3;
+  animation-duration: 30s;
+  animation-direction: reverse;
+}
+.join-ring.second::after {
+  background: var(--coral);
+  box-shadow: 0 0 0 5px #f055550c;
 }
 .join-art > span {
   position: absolute;
@@ -1351,6 +1404,7 @@ svg {
   font-size: 63px;
   font-style: italic;
   transform: rotate(-10deg);
+  animation: invitation-float 7s ease-in-out infinite;
 }
 .join-art > i,
 .join-art > b {
@@ -1361,6 +1415,7 @@ svg {
   background: var(--coral);
   left: 221px;
   top: 23px;
+  animation: invitation-float 6s ease-in-out infinite;
 }
 .join-art > b {
   width: 10px;
@@ -1368,6 +1423,7 @@ svg {
   background: var(--blue);
   left: 54px;
   top: 218px;
+  animation-delay: -3s;
 }
 .join-art:after {
   content: "YOU BELONG HERE";
@@ -1492,14 +1548,28 @@ footer {
   inset: 15%;
   border: 1px solid #76aaff;
   border-radius: 50%;
+  animation: decorative-orbit-turn 22s linear infinite;
+}
+.orbit > span:first-child::after {
+  content: "";
+  position: absolute;
+  top: 14%;
+  left: 14%;
+  width: 8%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--blue);
 }
 .orbit > span:nth-child(2) {
   transform: rotate(55deg) scaleX(0.48);
   border-color: #f05555;
+  animation-duration: 28s;
+  animation-direction: reverse;
 }
 .orbit > span:nth-child(3) {
   transform: rotate(-55deg) scaleX(0.48);
   border-color: #76aaff;
+  animation-duration: 34s;
 }
 .orbit > i {
   position: absolute;
@@ -1510,6 +1580,7 @@ footer {
   background: var(--coral);
   border: 3px solid white;
   border-radius: 50%;
+  animation: invitation-float 5s ease-in-out infinite;
 }
 .orbit > b {
   position: absolute;
@@ -1519,6 +1590,7 @@ footer {
   height: 12%;
   background: var(--blue);
   border-radius: 50%;
+  animation: orbit-core-breathe 5s ease-in-out infinite;
 }
 .archive-section {
   padding-bottom: 110px;
@@ -1530,6 +1602,40 @@ footer {
   gap: 25px;
   padding-block: 25px;
   border-block: 1px solid var(--line);
+}
+.archive-filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding-block: 22px;
+  border-bottom: 1px solid var(--line);
+}
+.archive-filters .gallery-filter {
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.archive-filters .search-field {
+  margin-left: auto;
+}
+.event-gallery .gallery-overlay {
+  background: linear-gradient(transparent 35%, #0c172cbf);
+}
+.event-gallery .gallery-overlay small {
+  letter-spacing: 0.04em;
+}
+.event-gallery-date {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 5px;
+  opacity: 0.85;
+}
+.event-gallery .gallery-item:focus-visible {
+  outline-offset: 4px;
 }
 .segmented {
   display: flex;
@@ -1687,6 +1793,44 @@ footer {
 }
 .detail-photo img {
   object-position: center 60%;
+}
+.photo-credit {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.photo-credit a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.event-album {
+  margin-top: 56px;
+}
+.event-album h2 {
+  margin: 14px 0 28px;
+  font-size: clamp(30px, 4vw, 46px);
+}
+.event-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.event-photo-grid .photo {
+  aspect-ratio: 4 / 3;
+  border-radius: 9px;
+}
+.event-photo-grid .photo:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+}
+@media (max-width: 700px) {
+  .event-photo-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .event-photo-grid .photo:last-child:nth-child(odd) {
+    aspect-ratio: 4 / 3;
+  }
 }
 .detail-content {
   display: grid;
@@ -2164,7 +2308,9 @@ footer {
   margin-bottom: 36px;
 }
 .contact-caption {
-  font-size: 11px;
+  max-width: 590px;
+  line-height: 1.8;
+  font-size: 13px;
   margin-top: 12px;
 }
 .not-found {
@@ -2211,6 +2357,42 @@ footer {
     transform: rotate(45deg);
   }
 }
+@keyframes hero-orbit-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes hero-orbit-counterturn {
+  from {
+    transform: rotate(-34deg);
+  }
+  to {
+    transform: rotate(-394deg);
+  }
+}
+@keyframes decorative-orbit-turn {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes invitation-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+@keyframes orbit-core-breathe {
+  0%,
+  100% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.12;
+  }
+}
 @keyframes idea-in {
   from {
     opacity: 0.3;
@@ -2252,7 +2434,7 @@ footer {
   .hero-visual {
     height: 425px;
   }
-  .hero-photo {
+  .hero-slides.hero-photo {
     height: 290px;
   }
   .hero-photo-wrap {
@@ -2282,29 +2464,10 @@ footer {
     bottom: 0;
     left: -8px;
   }
-  .hero-stamp {
-    width: 124px;
-    height: 124px;
-    right: 0;
-    bottom: -4px;
-  }
-  .hero-stamp > span:first-child {
-    font-size: 8px;
-  }
-  .hero-stamp small {
-    font-size: 7px;
-  }
-  .hero-stamp .stamp-arrow {
-    font-size: 53px;
-  }
   .hero-asterisk {
     font-size: 88px;
     right: 12px;
     top: -10px;
-  }
-  .hero-location {
-    left: 158px;
-    font-size: 8px;
   }
   .hero-actions {
     gap: 18px;
@@ -2412,7 +2575,7 @@ footer {
     top: 57px;
     width: calc(100% - 8px);
   }
-  .hero-photo {
+  .hero-slides.hero-photo {
     height: 257px;
   }
   .hero-orbit {
@@ -2448,23 +2611,6 @@ footer {
     height: 120px;
     bottom: -18px;
     left: -15px;
-  }
-  .hero-stamp {
-    width: 107px;
-    height: 107px;
-    right: -8px;
-    bottom: -22px;
-  }
-  .hero-stamp > span:first-child {
-    font-size: 7px;
-  }
-  .hero-stamp small {
-    font-size: 6px;
-  }
-  .hero-location {
-    bottom: -52px;
-    left: 129px;
-    font-size: 7px;
   }
   .hero-asterisk {
     top: 0;
@@ -2812,7 +2958,7 @@ footer {
     right: 5px;
     top: 40px;
   }
-  .hero-photo {
+  .hero-slides.hero-photo {
     height: 271px;
   }
   .hero-orbit {
@@ -2849,26 +2995,6 @@ footer {
     height: 126px;
     bottom: -4px;
     left: 2px;
-  }
-  .hero-stamp {
-    width: 115px;
-    height: 115px;
-    right: 8px;
-    bottom: -3px;
-  }
-  .hero-stamp > span:first-child {
-    font-size: 7px;
-  }
-  .hero-stamp small {
-    font-size: 6px;
-  }
-  .hero-stamp .stamp-arrow {
-    font-size: 52px;
-  }
-  .hero-location {
-    left: 158px;
-    bottom: -29px;
-    font-size: 7px;
   }
   .hero-scroll {
     bottom: 16px;
@@ -3582,12 +3708,8 @@ footer {
   .hero-visual {
     height: 344px;
   }
-  .hero-photo {
+  .hero-slides.hero-photo {
     height: 242px;
-  }
-  .hero-stamp {
-    width: 103px;
-    height: 103px;
   }
   .hero-note {
     width: 116px;
@@ -3595,10 +3717,6 @@ footer {
   .hero-small-photo {
     width: 128px;
     height: 116px;
-  }
-  .hero-location {
-    left: 142px;
-    font-size: 6px;
   }
   .hero-orbit {
     height: 312px;
@@ -4021,5 +4139,29 @@ footer {
   }
   .founders-note {
     font-size: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .partner-actions {
+    justify-content: flex-start;
+    gap: 18px;
+  }
+  .archive-filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .archive-filters .search-field {
+    width: 100%;
+    margin-left: 0;
+  }
+  .event-gallery .gallery-overlay {
+    padding: 15px 12px;
+  }
+  .event-gallery .gallery-overlay small {
+    font-size: 8px;
+  }
+  .event-gallery-date {
+    font-size: 10px;
   }
 }

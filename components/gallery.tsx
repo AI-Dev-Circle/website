@@ -11,21 +11,21 @@ import {
   Pause,
   Play,
 } from "lucide-react";
-import { galleryEvents, events } from "@/lib/data";
+import { galleryEvents, events, featuredEvents, eventLabel } from "@/lib/data";
 const homepagePhotos = [
   ...galleryEvents,
+  ...featuredEvents.flatMap((event) =>
+    (event.photos ?? []).map((photo) => ({ ...event, image: photo.src })),
+  ),
   ...events.filter(
     (event) => !galleryEvents.some((photo) => photo.edition === event.edition),
   ),
 ];
-export default function Gallery({ full = false }: { full?: boolean }) {
-  const [year, setYear] = useState("all");
+export default function Gallery() {
   const [paused, setPaused] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
-  const items = full
-    ? events.filter((e) => year === "all" || e.year === Number(year))
-    : homepagePhotos;
+  const items = homepagePhotos;
   const active = selected === null ? null : items[selected];
   useEffect(() => {
     if (selected === null) return;
@@ -45,110 +45,71 @@ export default function Gallery({ full = false }: { full?: boolean }) {
     );
   return (
     <>
-      {full && (
-        <div className="gallery-filter" aria-label="Filter photos by year">
-          {["all", "2026", "2025", "2024", "2023"].map((y) => (
-            <button
-              key={y}
-              aria-pressed={year === y}
-              onClick={() => setYear(y)}
-            >
-              {y === "all" ? "All moments" : y}
-            </button>
-          ))}
-          <span aria-live="polite">{items.length} moments</span>
-        </div>
-      )}
-      {full ? (
-        <div className="gallery-grid gallery-full">
-          {items.map((event, index) => (
-            <button
-              key={event.edition}
-              className={`gallery-item gallery-item-${index % 6}`}
-              onClick={() => setSelected(index)}
-              aria-label={`Open photo: ReactPlay at ${event.host}, edition ${event.edition}`}
-            >
-              <Image
-                src={event.image}
-                alt={`ReactPlay meetup at ${event.host} in ${event.year}`}
-                fill
-                sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
-              />
-              <span className="gallery-overlay">
-                <span>
-                  {event.host}
-                  <small>REACTPLAY · {event.year}</small>
-                </span>
-                <Expand size={20} />
-              </span>
-            </button>
-          ))}
-        </div>
-      ) : (
-        <div
-          className="gallery-marquee"
-          data-paused={paused || selected !== null}
-        >
-          {[0, 1].map((row) => (
-            <div
-              className={`marquee-window photo-row photo-row-${row}`}
-              key={row}
-              role="region"
-              aria-label={`Meetup memories, row ${row + 1}`}
-            >
-              <div className="marquee-track photo-track">
-                {[0, 1].map((copy) => (
-                  <div
-                    className="marquee-group photo-group"
-                    key={copy}
-                    aria-hidden={copy === 1 ? true : undefined}
-                  >
-                    {items.map(
-                      (event, index) =>
-                        index % 2 === row && (
-                          <button
-                            key={event.edition}
-                            className="gallery-item marquee-photo"
-                            onClick={() => setSelected(index)}
-                            tabIndex={copy === 1 ? -1 : undefined}
-                            aria-label={`Open photo: ReactPlay at ${event.host}, edition ${event.edition}`}
-                          >
-                            <Image
-                              src={event.image}
-                              alt={`ReactPlay meetup at ${event.host} in ${event.year}`}
-                              fill
-                              sizes="(max-width: 700px) 270px, 380px"
-                            />
-                            <span className="gallery-overlay">
-                              <span>
-                                {event.host}
-                                <small>REACTPLAY · {event.year}</small>
-                              </span>
-                              <Expand size={18} />
+      <div
+        className="gallery-marquee"
+        data-paused={paused || selected !== null}
+      >
+        {[0, 1].map((row) => (
+          <div
+            className={`marquee-window photo-row photo-row-${row}`}
+            key={row}
+            role="region"
+            aria-label={`Meetup memories, row ${row + 1}`}
+          >
+            <div className="marquee-track photo-track">
+              {[0, 1].map((copy) => (
+                <div
+                  className="marquee-group photo-group"
+                  key={copy}
+                  aria-hidden={copy === 1 ? true : undefined}
+                >
+                  {items.map(
+                    (event, index) =>
+                      index % 2 === row && (
+                        <button
+                          key={`${event.slug}-${event.image}`}
+                          className="gallery-item marquee-photo"
+                          onClick={() => setSelected(index)}
+                          tabIndex={copy === 1 ? -1 : undefined}
+                          aria-label={`Open photo: ${event.title}, ${event.when}`}
+                        >
+                          <Image
+                            src={event.image}
+                            alt={`Our community gathering with ${event.host} in ${event.year}`}
+                            fill
+                            sizes="(max-width: 700px) 270px, 380px"
+                          />
+                          <span className="gallery-overlay">
+                            <span>
+                              {event.host}
+                              <small>
+                                {event.community ?? "ReactPlay"} · {event.year}
+                              </small>
                             </span>
-                          </button>
-                        ),
-                    )}
-                  </div>
-                ))}
-              </div>
+                            <Expand size={18} />
+                          </span>
+                        </button>
+                      ),
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
-          <div className="container marquee-controls">
-            <p>Different rooms. Familiar faces. A circle that keeps growing.</p>
-            <button
-              className="motion-toggle"
-              onClick={() => setPaused(!paused)}
-              aria-label={
-                paused ? "Play photo slideshow" : "Pause photo slideshow"
-              }
-            >
-              {paused ? <Play size={13} /> : <Pause size={13} />}
-              {paused ? "Play" : "Pause"}
-            </button>
           </div>
+        ))}
+        <div className="container marquee-controls">
+          <p>Different rooms. Familiar faces. A circle that keeps growing.</p>
+          <button
+            className="motion-toggle"
+            onClick={() => setPaused(!paused)}
+            aria-label={
+              paused ? "Play photo slideshow" : "Pause photo slideshow"
+            }
+          >
+            {paused ? <Play size={13} /> : <Pause size={13} />}
+            {paused ? "Play" : "Pause"}
+          </button>
         </div>
-      )}
+      </div>
       <dialog
         ref={dialog}
         className="lightbox"
@@ -186,7 +147,7 @@ export default function Gallery({ full = false }: { full?: boolean }) {
             <div className="lightbox-photo">
               <Image
                 src={active.image}
-                alt={`ReactPlay community at ${active.host}, ${active.year}`}
+                alt={`Our community gathering with ${active.host}, ${active.year}`}
                 fill
                 sizes="90vw"
               />
@@ -195,8 +156,20 @@ export default function Gallery({ full = false }: { full?: boolean }) {
               <div>
                 <h2>{active.host}, Bengaluru</h2>
                 <p>
-                  ReactPlay edition {active.edition} · {active.when}
+                  {eventLabel(active)} · {active.when}
                 </p>
+                {active.photoCredit && (
+                  <p className="photo-credit">
+                    Photos by{" "}
+                    <a
+                      href={active.photoCredit.url}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {active.photoCredit.name}
+                    </a>
+                  </p>
+                )}
                 <Link
                   href={`/events/${active.slug}`}
                   onClick={() => setSelected(null)}

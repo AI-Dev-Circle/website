@@ -24,14 +24,13 @@ AI Dev Circle is the next chapter of that journey, backed by ReactPlay and found
 
 This repository contains the AI Dev Circle community website. It introduces who we are, preserves our ReactPlay journey, and helps people find their next way to take part.
 
-| Page                             | What you will find                                                                 |
-| -------------------------------- | ---------------------------------------------------------------------------------- |
-| Home (`/`)                       | Community introduction, meetup highlights, photos, project ideas, and ways to join |
-| Events (`/events`)               | Searchable past meetups and confirmed upcoming gatherings                          |
-| Event details (`/events/[slug]`) | Event information, photos, and original recaps or registration links               |
-| Our story (`/our-story`)         | Our roots, vision, timeline, and founding members                                  |
-| Moments (`/moments`)             | Photos and video highlight links from our meetups                                  |
-| Partners (`/partners`)           | Organizations we have collaborated with along the community journey                |
+| Page                             | What you will find                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------- |
+| Home (`/`)                       | Community introduction, meetup highlights, photos, project ideas, and ways to join    |
+| Events (`/events`)               | Meetup photo gallery, year filters, search, upcoming gatherings, and video highlights |
+| Event details (`/events/[slug]`) | Event information, photos, and original recaps or registration links                  |
+| Our story (`/our-story`)         | Our roots, vision, timeline, and founding members                                     |
+| Partners (`/partners`)           | Organizations we have collaborated with along the community journey                   |
 
 The site uses a light theme with our blue (`#0071FF`) and coral (`#F05555`) colors, gentle motion, and looping photo and partner galleries. Motion respects reduced-motion preferences, and the galleries include pause controls.
 

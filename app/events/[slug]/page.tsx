@@ -8,7 +8,7 @@ import {
   MapPin,
   Play,
 } from "lucide-react";
-import { events, upcomingEvents } from "@/lib/data";
+import { events, upcomingEvents, eventLabel } from "@/lib/data";
 import { UpcomingDetails } from "@/components/upcoming";
 import { Photo, Eyebrow, JoinSection, EventCard } from "@/components/site";
 export const dynamicParams = false;
@@ -26,7 +26,7 @@ export async function generateMetadata({
     return { title: upcoming.title, description: upcoming.description };
   const e = events.find((e) => e.slug === slug);
   return {
-    title: e ? `ReactPlay ${e.edition} at ${e.host}` : "Event not found",
+    title: e ? e.title : "Event not found",
     description: e?.description,
   };
 }
@@ -49,8 +49,7 @@ export default async function EventDetail({
         </Link>
         <div className="detail-heading">
           <Eyebrow>
-            REACTPLAY ARCHIVES / EDITION{" "}
-            {String(event.edition).padStart(2, "0")}
+            {event.community ?? "ReactPlay"} / {eventLabel(event)}
           </Eyebrow>
           <h1>{event.title}</h1>
           <div className="detail-meta">
@@ -60,7 +59,7 @@ export default async function EventDetail({
             </span>
             <span>
               <MapPin size={17} />
-              {event.host} · Bengaluru
+              {event.venue ?? event.host} · Bengaluru
             </span>
             <span className="past-badge">Past gathering</span>
           </div>
@@ -68,18 +67,25 @@ export default async function EventDetail({
         <Photo
           className="detail-photo"
           src={event.image}
-          alt={`The community at ReactPlay edition ${event.edition}, ${event.host}`}
+          alt={`The community gathered for ${event.title}, ${event.when}`}
           priority
           sizes="(max-width: 1200px) 100vw, 1200px"
         />
+        {event.photoCredit && (
+          <p className="photo-credit">
+            Photos by{" "}
+            <a href={event.photoCredit.url} target="_blank" rel="noreferrer">
+              {event.photoCredit.name}
+            </a>
+          </p>
+        )}
         <div className="detail-content">
           <div>
             <h2>A moment in our story.</h2>
             <p>{event.description}</p>
             <p>
-              This gathering was hosted as part of ReactPlay, the community
-              behind AI Dev Circle. We’re carrying that spirit of learning and
-              connection into our next chapter.
+              {event.story ??
+                "This gathering was hosted as part of ReactPlay, the community behind AI Dev Circle. We’re carrying that spirit of learning and connection into our next chapter."}
             </p>
           </div>
           <aside>
@@ -110,14 +116,35 @@ export default async function EventDetail({
             )}
           </aside>
         </div>
+        {!!event.photos?.length && (
+          <section
+            className="event-album"
+            aria-labelledby="event-album-heading"
+          >
+            <Eyebrow>FROM THE DAY</Eyebrow>
+            <h2 id="event-album-heading">
+              A few more <span className="serif-word">memories.</span>
+            </h2>
+            <div className="event-photo-grid">
+              {event.photos.map((photo) => (
+                <Photo
+                  key={photo.src}
+                  src={photo.src}
+                  alt={photo.alt}
+                  sizes="(max-width: 700px) 100vw, 50vw"
+                />
+              ))}
+            </div>
+          </section>
+        )}
       </article>
       <section className="container section">
         <div className="section-heading">
           <h2>
             Keep <span className="serif-word">exploring.</span>
           </h2>
-          <Link href="/moments" className="text-link">
-            More moments <ArrowUpRight size={18} />
+          <Link href="/events#archive" className="text-link">
+            More gatherings <ArrowUpRight size={18} />
           </Link>
         </div>
         <div className="event-grid">

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowUpRight, Building2, Mic2, HeartHandshake } from "lucide-react";
 import { Eyebrow, Orbit } from "@/components/site";
-import { partners, CONTACT_URL, CONTACT_EMAIL } from "@/lib/data";
+import { partners, CONTACT_URL } from "@/lib/data";
 import Reveal from "@/components/reveal";
 export const metadata: Metadata = {
   title: "Partners",
@@ -103,7 +103,11 @@ export default function Partners() {
           <a href={CONTACT_URL} className="button button-blue">
             Let’s talk about a partnership <ArrowUpRight size={18} />
           </a>
-          <p className="contact-caption">Email us at {CONTACT_EMAIL}.</p>
+          <p className="contact-caption">
+            Host a meetup, support an event, share a workshop, or bring us a new
+            idea. Tell us what you have in mind—we’ll be happy to help shape it
+            together.
+          </p>
         </div>
       </section>
     </>
