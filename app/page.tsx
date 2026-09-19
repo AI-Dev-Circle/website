@@ -23,6 +23,8 @@ import Gallery from "@/components/gallery";
 import PartnerMarquee from "@/components/partner-marquee";
 import HeroCollage from "@/components/hero-collage";
 import BrandSpark from "@/components/brand-spark";
+import ReelGallery from "@/components/reel-gallery";
+import { reels } from "@/lib/reels";
 import { CONTACT_URL, featuredEvents, getEvent } from "@/lib/data";
 
 export default function Home() {
@@ -301,6 +303,20 @@ export default function Home() {
           </Reveal>
         </div>
         <Gallery />
+        <div className="container home-reels">
+          <div className="section-heading">
+            <div>
+              <Eyebrow>A LITTLE CLOSER TO BEING THERE</Eyebrow>
+              <h3>
+                Good days, <span className="serif-word">in motion.</span>
+              </h3>
+            </div>
+            <Link href="/events#highlights" className="text-link">
+              All video highlights <Arrow diagonal />
+            </Link>
+          </div>
+          <ReelGallery items={reels.slice(0, 3)} variant="featured" />
+        </div>
       </section>
       <section className="container section spark-section">
         <Reveal>

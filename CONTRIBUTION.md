@@ -72,6 +72,7 @@ Use the recap URL as the source for event details. If only a month is confirmed,
 - Share genuine community media that you have permission to publish. Include photographer credit or attribution requirements in the pull request when applicable.
 - Check the image crop and loading behavior on mobile and desktop. Preserve useful detail without committing unnecessarily large files.
 - For video highlights, include a working source link and context about the event. Do not add placeholder clips or generated images presented as real meetup photos.
+- Instagram reels live in `lib/reels.ts`. Match each reel to its gathering using the original caption. The first three appear on the homepage; all appear in Events and on their matching event pages. Use a local event photo for the poster. Instagram loads only when a visitor opens a reel; keep the direct Instagram fallback link visible, since embeds can be unavailable.
 
 ### Partners, founders, and links
 

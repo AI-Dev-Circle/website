@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { events, upcomingEvents, eventLabel } from "@/lib/data";
 import { UpcomingDetails } from "@/components/upcoming";
+import { reels } from "@/lib/reels";
+import ReelGallery from "@/components/reel-gallery";
 import { Photo, Eyebrow, JoinSection, EventCard } from "@/components/site";
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -40,6 +42,7 @@ export default async function EventDetail({
   if (upcoming) return <UpcomingDetails event={upcoming} />;
   const event = events.find((e) => e.slug === slug);
   if (!event) notFound();
+  const eventReels = reels.filter((reel) => reel.eventSlug === event.slug);
   const others = events.filter((e) => e.edition !== event.edition).slice(0, 3);
   return (
     <>
@@ -116,6 +119,25 @@ export default async function EventDetail({
             )}
           </aside>
         </div>
+        {eventReels.length > 0 && (
+          <section
+            className="event-reel-section"
+            aria-labelledby="event-reel-heading"
+          >
+            <div>
+              <Eyebrow>PRESS PLAY ON THE DAY</Eyebrow>
+              <h2 id="event-reel-heading">
+                A little more{" "}
+                <span className="serif-word">of the feeling.</span>
+              </h2>
+              <p>
+                The people, the conversations, and a few moments in between.
+                Take a look inside this gathering.
+              </p>
+            </div>
+            <ReelGallery items={eventReels} variant="event" />
+          </section>
+        )}
         {!!event.photos?.length && (
           <section
             className="event-album"

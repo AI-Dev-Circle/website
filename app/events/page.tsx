@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Eyebrow, JoinSection, Orbit } from "@/components/site";
 import EventExplorer from "@/components/event-explorer";
 import VideoHighlights from "@/components/video-highlights";
+import { Play, ArrowDown } from "lucide-react";
 export const metadata: Metadata = {
   title: "Events",
   description:
@@ -23,6 +24,9 @@ export default function Events() {
             <br className="desktop-break" /> “we should build that.” Explore our
             gatherings.
           </p>
+          <a href="#highlights" className="text-link highlights-shortcut">
+            <Play size={16} /> Watch highlights <ArrowDown size={16} />
+          </a>
         </div>
         <Orbit />
       </section>

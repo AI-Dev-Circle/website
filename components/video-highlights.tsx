@@ -1,10 +1,12 @@
 import { ArrowUpRight, Play } from "lucide-react";
 import { Eyebrow, Photo } from "@/components/site";
 import { events, INSTAGRAM_URL } from "@/lib/data";
+import { reels } from "@/lib/reels";
+import ReelGallery from "@/components/reel-gallery";
 
 export default function VideoHighlights() {
   return (
-    <section className="container section">
+    <section className="container section video-highlights" id="highlights">
       <div className="section-heading">
         <div>
           <Eyebrow>PRESS PLAY ON A GOOD DAY</Eyebrow>
@@ -20,6 +22,11 @@ export default function VideoHighlights() {
         >
           Follow the moments <ArrowUpRight size={18} />
         </a>
+      </div>
+      <ReelGallery items={reels} />
+      <div className="other-highlights-heading">
+        <h3>More from the community.</h3>
+        <p>A couple more good days, worth revisiting.</p>
       </div>
       <div className="video-grid">
         {events
